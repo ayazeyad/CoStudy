@@ -1,0 +1,113 @@
+﻿@using Microsoft.AspNetCore.Identity;
+ @inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@ViewData["Title"] - CoStudy</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/coursesstyles.css" />
+    <link rel="stylesheet" href="~/css/indexstyles.css">
+    <link rel="icon" type="image/x-icon" href="~/images/favicon.png" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+    
+    <!-- for edit portfolio-->
+    <style>
+        a {
+            text-decoration: none;
+        }</style>
+ 
+
+
+</head>
+<body>
+    <!-----------------------start of header---------------------------->
+    <header>
+        <a href="index.html"><img src="~/images/logo.png" alt="website-logo" width="160em" height="120em" /></a>
+        <div class="nav top">
+
+            @if (User.Identity!.IsAuthenticated)
+            {
+
+
+                
+    var user = await UserManager.GetUserAsync(User);
+    var userId = user?.Id;
+
+
+
+
+                if (User.IsInRole("Admin"))
+                {
+                    <a asp-action="Index" asp-controller="Dashboard" asp-area="Adminstrator" style=" color:white;
+    background-color: #366CC7;
+    border-radius: 25px;">Dashboard</a>
+                    <a asp-action="Logout" asp-controller="Account">LOGOUT</a>
+
+                    <a href="#about">ABOUT</a>
+                    <a href="#services">SERVICES</a>
+                    <a asp-action="Index" asp-controller="Home">HOME</a>
+
+                }
+                else
+                {
+                    <a asp-action="Portfolio" asp-controller="Account" asp-route-id="@userId" style=" color:white;
+    background-color: #366CC7;
+    border-radius: 25px;">@User.Identity.Name</a>
+                    <a asp-action="Logout" asp-controller="Account">LOGOUT</a>
+
+                    <a href="#about">ABOUT</a>
+                    <a href="#services">SERVICES</a>
+                    <a asp-action="Index" asp-controller="Home">HOME</a>
+
+
+                }
+
+
+
+            }
+            else
+            {
+
+                <a asp-action="Register" asp-controller="Account">SIGN UP</a>
+                <a asp-action="Login" asp-controller="Account">LOG IN</a>
+                <a href="#about">ABOUT</a>
+                <a href="#services">SERVICES</a>
+                <a asp-action="Index" asp-controller="Home">HOME</a>
+
+
+            }
+            
+        </div>
+    </header>
+    <!--------------------------end of header------------------------------->
+    <div class="container">
+        <main role="main" class="pb-3">
+@*            here the body of other views will be rendered,in this position
+*@            @RenderBody()
+        </main>
+    </div>
+
+    <!-----------------------start of footer section------------------------->
+    <footer>
+        <a href="index.html"><img src="~/images/logo.png" alt="website-logo" width="160em" height="120em" /></a>
+        <div class="nav footernav">
+            <a asp-action="Register" asp-controller="Account">SIGN UP</a>
+            <a asp-action="Login" asp-controller="Account">LOG IN</a>
+            <a href="#about">ABOUT</a>
+            <a href="#login">SERVICES</a>
+        </div>
+        <br> <br>
+        <div class="copyright"> All Right reserved - CoStudy</div>
+    </footer>
+    <!-------------------------End of footer section----------------------------->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
